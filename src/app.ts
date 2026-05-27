@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
+import productRoutes from "./modules/products/product.routes";
 
 import { errorMiddleware } from "./core/middleware/error.middleware";
 
@@ -18,12 +19,19 @@ app.use(helmet());
 
 app.get("/", (_, res) => {
   res.json({
-    message: "Backend running"
+    message: "Backend running",
+    version: "1.0.0",
+    endpoints: {
+      auth: "/api/v1/auth",
+      users: "/api/v1/users",
+      products: "/api/v1/products"
+    }
   });
 });
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/products", productRoutes);
 
 app.use(errorMiddleware);
 
