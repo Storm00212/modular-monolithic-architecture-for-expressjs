@@ -1,4 +1,5 @@
 import { prisma } from "../../config/db";
+import bcrypt from "bcryptjs";
 
 export const findByEmail = async (email: string) => {
   return prisma.user.findUnique({
@@ -26,7 +27,6 @@ export const createUser = async (
   });
 };
 
-export const comparePassword = async (user: { id: string; email: string; password: string; name: string; role: string; createdAt: Date; updatedAt: Date }, candidatePassword: string) => {
-  const bcrypt = require("bcryptjs");
+export const comparePasswords = async (user: { password: string }, candidatePassword: string) => {
   return bcrypt.compare(candidatePassword, user.password);
 };
