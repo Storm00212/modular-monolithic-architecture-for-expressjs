@@ -8,7 +8,7 @@ import {
   findByEmail,
   createUser,
   findById,
-  comparePassword
+  comparePasswords
 } from "./auth.repository";
 
 const registerSchema = z.object({
@@ -57,7 +57,7 @@ export const loginUser = async (data: { email: string; password: string }) => {
     throw new AppError("Invalid credentials", 401);
   }
 
-  const isValidPassword = await comparePassword(user, validated.password);
+  const isValidPassword = await comparePasswords(user, validated.password);
 
   if (!isValidPassword) {
     throw new AppError("Invalid credentials", 401);
