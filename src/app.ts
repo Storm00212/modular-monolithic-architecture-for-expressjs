@@ -8,6 +8,8 @@ import userRoutes from "./modules/users/user.routes";
 import productRoutes from "./modules/products/product.routes";
 
 import { errorMiddleware } from "./core/middleware/error.middleware";
+import { requestLogger } from "./core/middleware/requestLogger.middleware";
+import { rateLimiter } from "./core/middleware/rateLimiter.middleware";
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+app.use(requestLogger);
+app.use(rateLimiter(100, 60000));
 
 app.get("/", (_, res) => {
   res.json({
