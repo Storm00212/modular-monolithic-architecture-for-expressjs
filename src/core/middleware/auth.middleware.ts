@@ -43,7 +43,7 @@ export const authenticate = async (
     };
 
     next();
-  } catch (error) {
+  } catch (error: unknown) {
     next(new AppError("Invalid token", 401));
   }
 };
