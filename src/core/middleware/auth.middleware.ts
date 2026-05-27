@@ -47,3 +47,4 @@ export const authenticate = async (
     next(new AppError("Invalid token", 401));
   }
 };
+
