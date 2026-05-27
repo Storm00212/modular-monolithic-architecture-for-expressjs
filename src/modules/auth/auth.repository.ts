@@ -6,6 +6,12 @@ export const findByEmail = async (email: string) => {
   });
 };
 
+export const findById = async (id: string) => {
+  return prisma.user.findUnique({
+    where: { id }
+  });
+};
+
 export const createUser = async (
   email: string,
   password: string,
@@ -18,4 +24,9 @@ export const createUser = async (
       name
     }
   });
+};
+
+export const comparePassword = async (user: { id: string; email: string; password: string; name: string; role: string; createdAt: Date; updatedAt: Date }, candidatePassword: string) => {
+  const bcrypt = require("bcryptjs");
+  return bcrypt.compare(candidatePassword, user.password);
 };
