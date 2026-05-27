@@ -4,10 +4,12 @@ import { z } from "zod";
 
 import {
   fetchUsers,
-  getUserById,
-  updateUser,
-  deleteUser
+  findUserById,
+  updateUserService,
+  deleteUserService
 } from "./user.service";
+
+import { AuthenticatedRequest } from "../../core/middleware/auth.middleware";
 
 const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
@@ -37,7 +39,7 @@ export const getUserByIdController = async (
   next: NextFunction
 ) => {
   try {
-    const user = await getUserById(req.params.id);
+    const user = await findUserById(req.params.id);
 
     if (!user) {
       return next(new AppError("User not found", 404));
@@ -53,13 +55,13 @@ export const getUserByIdController = async (
 };
 
 export const updateUserController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const validatedData = updateUserSchema.parse(req.body);
-    const user = await updateUser(req.params.id, validatedData);
+    const user = await updateUserService(req.params.id, validatedData);
 
     return res.json({
       success: true,
@@ -74,12 +76,12 @@ export const updateUserController = async (
 };
 
 export const deleteUserController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    await deleteUser(req.params.id);
+    await deleteUserService(req.params.id);
 
     return res.json({
       success: true,
