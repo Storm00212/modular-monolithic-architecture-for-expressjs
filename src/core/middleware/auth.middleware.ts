@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AppError } from "../errors/AppError";
-import { findUserById } from "../../modules/users/user.repository";
+import { findById } from "../../modules/auth/auth.repository";
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -30,7 +30,7 @@ export const authenticate = async (
       process.env.JWT_SECRET as string
     ) as { id: string };
 
-    const user = await findUserById(decoded.id);
+    const user = await findById(decoded.id);
 
     if (!user) {
       return next(new AppError("User not found", 401));
