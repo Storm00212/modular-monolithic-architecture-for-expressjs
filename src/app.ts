@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
-app.use(rateLimiter(100, 60000));
+app.use(rateLimiter);
 
 app.get("/", (_, res) => {
   res.json({
